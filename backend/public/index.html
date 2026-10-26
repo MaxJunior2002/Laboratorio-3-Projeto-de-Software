@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastro | Moeda Estudantil</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <p class="eyebrow">Laboratório 3 · Sprint 2</p>
+        <h1>Sistema de Moeda Estudantil</h1>
+        <p>Cadastros iniciais de alunos e empresas parceiras.</p>
+      </header>
+
+      <p id="notice" class="notice" role="status" aria-live="polite"></p>
+
+      <section class="panel">
+        <h2 id="student-title">Cadastrar aluno</h2>
+        <form id="student-form">
+          <label>Nome<input name="name" required /></label>
+          <label>E-mail<input name="email" type="email" required /></label>
+          <label
+            >Senha<input name="password" type="password" minlength="8" required
+          /></label>
+          <label>CPF<input name="cpf" required /></label>
+          <label>RG<input name="rg" required /></label>
+          <label>Endereço<input name="address" required /></label>
+          <label>Curso<input name="course" required /></label>
+          <label
+            >Instituição<select name="institutionId" required></select
+          ></label>
+          <div class="actions">
+            <button type="submit">Salvar aluno</button>
+            <button
+              type="button"
+              class="secondary cancel-edit"
+              data-form="student-form"
+            >
+              Cancelar edição
+            </button>
+          </div>
+        </form>
+        <h3>Alunos cadastrados</h3>
+        <div id="students" class="records"></div>
+      </section>
+
+      <section class="panel">
+        <h2 id="company-title">Cadastrar empresa parceira</h2>
+        <form id="company-form">
+          <label>Nome da empresa<input name="name" required /></label>
+          <label>E-mail<input name="email" type="email" required /></label>
+          <label
+            >Senha<input name="password" type="password" minlength="8" required
+          /></label>
+          <div class="actions">
+            <button type="submit">Salvar empresa</button>
+            <button
+              type="button"
+              class="secondary cancel-edit"
+              data-form="company-form"
+            >
+              Cancelar edição
+            </button>
+          </div>
+        </form>
+        <h3>Empresas cadastradas</h3>
+        <div id="companies" class="records"></div>
+      </section>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Institution {
+  id         String      @id @default(uuid()) @db.Uuid
+  name       String      @unique
+  students   Student[]
+  professors Professor[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model User {
+  id             String          @id @default(uuid()) @db.Uuid
+  email          String          @unique
+  passwordHash   String
+  student        Student?
+  professor      Professor?
+  partnerCompany PartnerCompany?
+  wallet         Wallet?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Student {
+  id            String      @id @default(uuid()) @db.Uuid
+  name          String
+  cpf           String      @unique
+  rg            String      @unique
+  address       String
+  course        String
+  userId        String      @unique @db.Uuid
+  institutionId String      @db.Uuid
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Restrict)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([institutionId])
+}
+
+model Professor {
+  id            String      @id @default(uuid()) @db.Uuid
+  name          String
+  cpf           String      @unique
+  department    String
+  userId        String      @unique @db.Uuid
+  institutionId String      @db.Uuid
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Restrict)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([institutionId])
+}
+
+model PartnerCompany {
+  id         String      @id @default(uuid()) @db.Uuid
+  name       String
+  userId     String      @unique @db.Uuid
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  advantages Advantage[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Wallet {
+  id                  String        @id @default(uuid()) @db.Uuid
+  balance             Int           @default(0)
+  userId              String        @unique @db.Uuid
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions        Transaction[] @relation("WalletTransactions")
+  relatedTransactions Transaction[] @relation("RelatedWalletTransactions")
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model Advantage {
+  id               String         @id @default(uuid()) @db.Uuid
+  description      String
+  photoUrl         String
+  costInCoins      Int
+  active           Boolean        @default(true)
+  partnerCompanyId String         @db.Uuid
+  partnerCompany   PartnerCompany @relation(fields: [partnerCompanyId], references: [id], onDelete: Cascade)
+  transactions     Transaction[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([partnerCompanyId])
+}
+
+model Transaction {
+  id              String     @id @default(uuid()) @db.Uuid
+  type            String
+  amount          Int
+  reason          String?
+  redemptionCode  String?    @unique
+  walletId        String     @db.Uuid
+  relatedWalletId String?    @db.Uuid
+  advantageId     String?    @db.Uuid
+  wallet          Wallet     @relation("WalletTransactions", fields: [walletId], references: [id], onDelete: Restrict)
+  relatedWallet   Wallet?    @relation("RelatedWalletTransactions", fields: [relatedWalletId], references: [id], onDelete: Restrict)
+  advantage       Advantage? @relation(fields: [advantageId], references: [id], onDelete: Restrict)
+  createdAt       DateTime   @default(now())
+
+  @@index([walletId, createdAt])
+}
