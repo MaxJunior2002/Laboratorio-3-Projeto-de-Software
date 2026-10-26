@@ -45,7 +45,7 @@ model Student {
   @@index([institutionId])
 }
 
-model Professor {
+model Teacher {
   id            String      @id @default(uuid()) @db.Uuid
   name          String
   cpf           String      @unique
