@@ -5,34 +5,22 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { hash } from "bcryptjs";
-import { PrismaService } from "../prisma/prisma.service";
 import { CreatePartnerCompanyDto } from "./dto/create-partner-company.dto";
 import { UpdatePartnerCompanyDto } from "./dto/update-partner-company.dto";
-
-const partnerCompanySelection = {
-  id: true,
-  name: true,
-  userId: true,
-  createdAt: true,
-  updatedAt: true,
-  user: { select: { email: true } },
-} satisfies Prisma.PartnerCompanySelect;
+import { PartnerCompaniesDao } from "./partner-companies.dao";
 
 @Injectable()
 export class PartnerCompaniesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly partnerCompaniesDao: PartnerCompaniesDao) {}
 
   async create(dto: CreatePartnerCompanyDto) {
     try {
       const passwordHash = await hash(dto.password, 12);
-      return await this.prisma.partnerCompany.create({
-        data: {
-          name: dto.name,
-          user: {
-            create: { email: dto.email, passwordHash },
-          },
+      return await this.partnerCompaniesDao.create({
+        name: dto.name,
+        user: {
+          create: { email: dto.email, passwordHash },
         },
-        select: partnerCompanySelection,
       });
     } catch (error) {
       this.handleDatabaseError(error);
@@ -40,17 +28,11 @@ export class PartnerCompaniesService {
   }
 
   findAll() {
-    return this.prisma.partnerCompany.findMany({
-      select: partnerCompanySelection,
-      orderBy: { name: "asc" },
-    });
+    return this.partnerCompaniesDao.findAll();
   }
 
   async findOne(id: string) {
-    const partnerCompany = await this.prisma.partnerCompany.findUnique({
-      where: { id },
-      select: partnerCompanySelection,
-    });
+    const partnerCompany = await this.partnerCompaniesDao.findById(id);
     if (!partnerCompany) {
       throw new NotFoundException("Empresa parceira não encontrada.");
     }
@@ -67,15 +49,11 @@ export class PartnerCompaniesService {
     };
 
     try {
-      return await this.prisma.partnerCompany.update({
-        where: { id },
-        data: {
-          ...companyData,
-          ...(Object.keys(userData).length > 0 && {
-            user: { update: userData },
-          }),
-        },
-        select: partnerCompanySelection,
+      return await this.partnerCompaniesDao.update(id, {
+        ...companyData,
+        ...(Object.keys(userData).length > 0 && {
+          user: { update: userData },
+        }),
       });
     } catch (error) {
       this.handleDatabaseError(error);
@@ -84,7 +62,7 @@ export class PartnerCompaniesService {
 
   async remove(id: string) {
     try {
-      await this.prisma.partnerCompany.delete({ where: { id } });
+      await this.partnerCompaniesDao.deleteById(id);
       return { message: "Empresa parceira removida com sucesso." };
     } catch (error) {
       this.handleDatabaseError(error);

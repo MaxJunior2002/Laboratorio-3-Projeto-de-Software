@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { InstitutionsDao } from "./institutions.dao";
 
 @Injectable()
 export class InstitutionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly institutionsDao: InstitutionsDao) {}
 
   findAll() {
-    return this.prisma.institution.findMany({ orderBy: { name: "asc" } });
+    return this.institutionsDao.findAll();
   }
 }

@@ -5,49 +5,31 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { hash } from "bcryptjs";
-import { PrismaService } from "../prisma/prisma.service";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
-
-const studentSelection = {
-  id: true,
-  name: true,
-  cpf: true,
-  rg: true,
-  address: true,
-  course: true,
-  userId: true,
-  institutionId: true,
-  createdAt: true,
-  updatedAt: true,
-  user: { select: { email: true } },
-  institution: { select: { id: true, name: true } },
-} satisfies Prisma.StudentSelect;
+import { StudentsDao } from "./students.dao";
 
 @Injectable()
 export class StudentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly studentsDao: StudentsDao) {}
 
   async create(dto: CreateStudentDto) {
     try {
       const passwordHash = await hash(dto.password, 12);
-      return await this.prisma.student.create({
-        data: {
-          name: dto.name,
-          cpf: dto.cpf,
-          rg: dto.rg,
-          address: dto.address,
-          course: dto.course,
-          institution: { connect: { id: dto.institutionId } },
-          user: {
-            create: {
-              email: dto.email,
-              passwordHash,
-              wallet: { create: {} },
-            },
+      return await this.studentsDao.create({
+        name: dto.name,
+        cpf: dto.cpf,
+        rg: dto.rg,
+        address: dto.address,
+        course: dto.course,
+        institution: { connect: { id: dto.institutionId } },
+        user: {
+          create: {
+            email: dto.email,
+            passwordHash,
+            wallet: { create: {} },
           },
         },
-        select: studentSelection,
       });
     } catch (error) {
       this.handleDatabaseError(error);
@@ -55,17 +37,11 @@ export class StudentsService {
   }
 
   findAll() {
-    return this.prisma.student.findMany({
-      select: studentSelection,
-      orderBy: { name: "asc" },
-    });
+    return this.studentsDao.findAll();
   }
 
   async findOne(id: string) {
-    const student = await this.prisma.student.findUnique({
-      where: { id },
-      select: studentSelection,
-    });
+    const student = await this.studentsDao.findById(id);
     if (!student) {
       throw new NotFoundException("Aluno não encontrado.");
     }
@@ -82,18 +58,14 @@ export class StudentsService {
     };
 
     try {
-      return await this.prisma.student.update({
-        where: { id },
-        data: {
-          ...studentData,
-          ...(institutionId && {
-            institution: { connect: { id: institutionId } },
-          }),
-          ...(Object.keys(userData).length > 0 && {
-            user: { update: userData },
-          }),
-        },
-        select: studentSelection,
+      return await this.studentsDao.update(id, {
+        ...studentData,
+        ...(institutionId && {
+          institution: { connect: { id: institutionId } },
+        }),
+        ...(Object.keys(userData).length > 0 && {
+          user: { update: userData },
+        }),
       });
     } catch (error) {
       this.handleDatabaseError(error);
@@ -102,7 +74,7 @@ export class StudentsService {
 
   async remove(id: string) {
     try {
-      await this.prisma.student.delete({ where: { id } });
+      await this.studentsDao.deleteById(id);
       return { message: "Aluno removido com sucesso." };
     } catch (error) {
       this.handleDatabaseError(error);
