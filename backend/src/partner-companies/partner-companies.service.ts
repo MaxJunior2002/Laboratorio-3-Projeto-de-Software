@@ -31,15 +31,19 @@ export class PartnerCompaniesService {
     return this.partnerCompaniesDao.findAll();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, requesterId: string) {
     const partnerCompany = await this.partnerCompaniesDao.findById(id);
-    if (!partnerCompany) {
+    if (!partnerCompany || partnerCompany.userId !== requesterId) {
       throw new NotFoundException("Empresa parceira não encontrada.");
     }
     return partnerCompany;
   }
 
-  async update(id: string, dto: UpdatePartnerCompanyDto) {
+  async update(id: string, requesterId: string, dto: UpdatePartnerCompanyDto) {
+    const company = await this.partnerCompaniesDao.findById(id);
+    if (!company || company.userId !== requesterId) {
+      throw new NotFoundException("Empresa parceira não encontrada.");
+    }
     const { email, password, ...companyData } = dto;
     const userData = {
       ...(email !== undefined && { email }),
@@ -60,8 +64,12 @@ export class PartnerCompaniesService {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: string, requesterId: string) {
     try {
+      const company = await this.partnerCompaniesDao.findById(id);
+      if (!company || company.userId !== requesterId) {
+        throw new NotFoundException("Empresa parceira não encontrada.");
+      }
       await this.partnerCompaniesDao.deleteById(id);
       return { message: "Empresa parceira removida com sucesso." };
     } catch (error) {

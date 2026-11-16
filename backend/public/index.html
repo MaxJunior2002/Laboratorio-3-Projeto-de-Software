@@ -3,18 +3,115 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cadastro | Moeda Estudantil</title>
+    <title>Sistema de Moeda Estudantil</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main class="container">
       <header>
-        <p class="eyebrow">Laboratório 3 · Sprint 3</p>
+        <p class="eyebrow">Laboratório 3 · Release 2</p>
         <h1>Sistema de Moeda Estudantil</h1>
-        <p>Cadastros iniciais de alunos e empresas parceiras.</p>
+        <p>Reconhecimento do mérito estudantil por meio de moedas virtuais.</p>
       </header>
 
       <p id="notice" class="notice" role="status" aria-live="polite"></p>
+
+      <section class="panel">
+        <h2>Acessar conta</h2>
+        <form id="login-form">
+          <label>E-mail<input name="email" type="email" required /></label>
+          <label
+            >Senha<input name="password" type="password" minlength="8" required
+          /></label>
+          <div class="actions">
+            <button type="submit">Entrar</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="dashboard" class="panel" hidden>
+        <div class="dashboard-header">
+          <div>
+            <h2 id="account-name"></h2>
+            <p id="account-role"></p>
+          </div>
+          <div class="actions">
+            <button id="refresh-statement" type="button" class="secondary">
+              Atualizar saldo
+            </button>
+            <button id="logout" type="button" class="secondary">Sair</button>
+          </div>
+        </div>
+        <section id="student-dashboard" hidden>
+          <h3>Saldo e extrato</h3>
+          <p id="student-balance" class="balance"></p>
+          <div id="student-transactions" class="records"></div>
+          <h3>Vantagens disponíveis</h3>
+          <div id="advantages" class="records"></div>
+        </section>
+
+        <section id="professor-dashboard" hidden>
+          <h3>Saldo e extrato</h3>
+          <p id="professor-balance" class="balance"></p>
+          <div id="professor-transactions" class="records"></div>
+          <h3>Enviar moedas</h3>
+          <form id="transfer-form">
+            <label>Aluno<select name="studentId" required></select></label>
+            <label
+              >Quantidade de moedas<input
+                name="amount"
+                type="number"
+                min="1"
+                step="1"
+                required
+            /></label>
+            <label class="wide"
+              >Motivo<textarea
+                name="reason"
+                maxlength="500"
+                required
+              ></textarea>
+            </label>
+            <div class="actions">
+              <button type="submit">Enviar moedas</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="company-dashboard" hidden>
+          <h3>Cadastrar vantagem</h3>
+          <form id="advantage-form">
+            <label
+              >Descrição<input name="description" maxlength="500" required
+            /></label>
+            <label
+              >Foto (URL)<input name="photoUrl" type="url" required
+            /></label>
+            <label
+              >Custo em moedas<input
+                name="costInCoins"
+                type="number"
+                min="1"
+                step="1"
+                required
+            /></label>
+            <div class="actions">
+              <button type="submit">Cadastrar vantagem</button>
+            </div>
+          </form>
+          <h3>Minhas vantagens</h3>
+          <div id="company-advantages" class="records"></div>
+          <h3>Conferir cupom</h3>
+          <form id="coupon-form">
+            <label class="wide"
+              >Código do cupom<input name="code" required
+            /></label>
+            <div class="actions">
+              <button type="submit">Validar e consumir cupom</button>
+            </div>
+          </form>
+        </section>
+      </section>
 
       <section class="panel">
         <h2 id="student-title">Cadastrar aluno</h2>

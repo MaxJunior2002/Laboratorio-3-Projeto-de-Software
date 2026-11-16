@@ -24,7 +24,7 @@ export class PartnerCompaniesDao {
 
   findAll() {
     return this.prisma.partnerCompany.findMany({
-      select: partnerCompanySelection,
+      select: { id: true, name: true },
       orderBy: { name: "asc" },
     });
   }

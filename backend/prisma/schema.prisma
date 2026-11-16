@@ -24,6 +24,7 @@ model User {
   professor      Professor?
   partnerCompany PartnerCompany?
   wallet         Wallet?
+  sessions       UserSession[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
@@ -45,7 +46,7 @@ model Student {
   @@index([institutionId])
 }
 
-model Teacher {
+model Professor {
   id            String      @id @default(uuid()) @db.Uuid
   name          String
   cpf           String      @unique
@@ -102,6 +103,8 @@ model Transaction {
   amount          Int
   reason          String?
   redemptionCode  String?    @unique
+  semesterKey     String?
+  consumedAt      DateTime?
   walletId        String     @db.Uuid
   relatedWalletId String?    @db.Uuid
   advantageId     String?    @db.Uuid
@@ -110,5 +113,31 @@ model Transaction {
   advantage       Advantage? @relation(fields: [advantageId], references: [id], onDelete: Restrict)
   createdAt       DateTime   @default(now())
 
+  @@unique([walletId, semesterKey])
   @@index([walletId, createdAt])
+}
+
+model UserSession {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique
+  userId    String   @db.Uuid
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model EmailOutbox {
+  id            String    @id @default(uuid()) @db.Uuid
+  recipient     String
+  subject       String
+  text          String
+  attempts      Int       @default(0)
+  lastError     String?
+  sentAt        DateTime?
+  nextAttemptAt DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+
+  @@index([sentAt, nextAttemptAt, createdAt])
 }

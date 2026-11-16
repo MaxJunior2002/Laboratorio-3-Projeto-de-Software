@@ -40,15 +40,26 @@ export class StudentsService {
     return this.studentsDao.findAll();
   }
 
-  async findOne(id: string) {
+  findDirectory(professorUserId: string) {
+    return this.studentsDao.findDirectory(professorUserId);
+  }
+
+  async findOne(id: string, requesterId: string, isProfessor: boolean) {
     const student = await this.studentsDao.findById(id);
     if (!student) {
+      throw new NotFoundException("Aluno não encontrado.");
+    }
+    if (!isProfessor && student.userId !== requesterId) {
       throw new NotFoundException("Aluno não encontrado.");
     }
     return student;
   }
 
-  async update(id: string, dto: UpdateStudentDto) {
+  async update(id: string, requesterId: string, dto: UpdateStudentDto) {
+    const student = await this.studentsDao.findById(id);
+    if (!student || student.userId !== requesterId) {
+      throw new NotFoundException("Aluno não encontrado.");
+    }
     const { email, password, institutionId, ...studentData } = dto;
     const userData = {
       ...(email !== undefined && { email }),
@@ -72,8 +83,12 @@ export class StudentsService {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: string, requesterId: string) {
     try {
+      const student = await this.studentsDao.findById(id);
+      if (!student || student.userId !== requesterId) {
+        throw new NotFoundException("Aluno não encontrado.");
+      }
       await this.studentsDao.deleteById(id);
       return { message: "Aluno removido com sucesso." };
     } catch (error) {

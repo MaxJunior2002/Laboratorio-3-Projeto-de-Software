@@ -30,7 +30,33 @@ export class StudentsDao {
 
   findAll() {
     return this.prisma.student.findMany({
-      select: studentSelection,
+      select: {
+        id: true,
+        name: true,
+        course: true,
+        institution: { select: { id: true, name: true } },
+      },
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async findDirectory(professorUserId: string) {
+    const professor = await this.prisma.professor.findUnique({
+      where: { userId: professorUserId },
+      select: { institutionId: true },
+    });
+    if (!professor) {
+      return [];
+    }
+
+    return this.prisma.student.findMany({
+      where: { institutionId: professor.institutionId },
+      select: {
+        id: true,
+        name: true,
+        course: true,
+        institution: { select: { name: true } },
+      },
       orderBy: { name: "asc" },
     });
   }
