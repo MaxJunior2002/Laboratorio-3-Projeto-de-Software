@@ -3,169 +3,168 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sistema de Moeda Estudantil</title>
+    <meta name="theme-color" content="#12372a" />
+    <title>Moeda Estudantil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main class="container">
-      <header>
-        <p class="eyebrow">Laboratório 3 · Release 2</p>
-        <h1>Sistema de Moeda Estudantil</h1>
-        <p>Reconhecimento do mérito estudantil por meio de moedas virtuais.</p>
-      </header>
-
-      <p id="notice" class="notice" role="status" aria-live="polite"></p>
-
-      <section class="panel">
-        <h2>Acessar conta</h2>
-        <form id="login-form">
-          <label>E-mail<input name="email" type="email" required /></label>
-          <label
-            >Senha<input name="password" type="password" minlength="8" required
-          /></label>
-          <div class="actions">
-            <button type="submit">Entrar</button>
+    <div id="app" class="app-shell">
+      <div id="global-notice" class="notice global-notice" role="status" aria-live="polite" hidden></div>
+      <main id="auth-screen" class="auth-screen" data-screen="auth">
+        <section class="auth-brand" aria-label="Apresentação">
+          <a class="brand brand-light" href="#login" aria-label="Moeda Estudantil">
+            <span class="brand-mark">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4.5 6v6c0 5.1 3.2 8.7 7.5 10 4.3-1.3 7.5-4.9 7.5-10V6L12 2Zm0 3.1 4.8 2.5v4.3c0 3.3-1.9 6.1-4.8 7.2-2.9-1.1-4.8-3.9-4.8-7.2V7.6L12 5.1Zm-1 8.6-2.2-2.2 1.4-1.4 1.1 1.1 3.1-3.1 1.4 1.4L11 13.7Z"/></svg>
+            </span>
+            <span>Moeda Estudantil</span>
+          </a>
+          <div class="auth-copy">
+            <p class="auth-kicker">Reconhecimento acadêmico</p>
+            <h1>Valorize cada conquista.</h1>
+            <p>Transforme mérito estudantil em oportunidades reais com uma comunidade que reconhece seu esforço.</p>
           </div>
-        </form>
-      </section>
-
-      <section id="dashboard" class="panel" hidden>
-        <div class="dashboard-header">
-          <div>
-            <h2 id="account-name"></h2>
-            <p id="account-role"></p>
+          <div class="brand-stats">
+            <div><strong>1.000</strong><span>moedas por semestre</span></div>
+            <div><strong>1 cupom</strong><span>por resgate concluído</span></div>
           </div>
-          <div class="actions">
-            <button id="refresh-statement" type="button" class="secondary">
-              Atualizar saldo
-            </button>
-            <button id="logout" type="button" class="secondary">Sair</button>
-          </div>
-        </div>
-        <section id="student-dashboard" hidden>
-          <h3>Saldo e extrato</h3>
-          <p id="student-balance" class="balance"></p>
-          <div id="student-transactions" class="records"></div>
-          <h3>Vantagens disponíveis</h3>
-          <div id="advantages" class="records"></div>
         </section>
 
-        <section id="professor-dashboard" hidden>
-          <h3>Saldo e extrato</h3>
-          <p id="professor-balance" class="balance"></p>
-          <div id="professor-transactions" class="records"></div>
-          <h3>Enviar moedas</h3>
-          <form id="transfer-form">
-            <label>Aluno<select name="studentId" required></select></label>
-            <label
-              >Quantidade de moedas<input
-                name="amount"
-                type="number"
-                min="1"
-                step="1"
-                required
-            /></label>
-            <label class="wide"
-              >Motivo<textarea
-                name="reason"
-                maxlength="500"
-                required
-              ></textarea>
-            </label>
-            <div class="actions">
-              <button type="submit">Enviar moedas</button>
+        <section class="auth-content">
+          <div class="auth-card">
+            <div id="login-view" data-auth-view>
+              <p class="eyebrow">Bem-vindo de volta</p>
+              <h2>Acesse sua conta</h2>
+              <p class="form-intro">Entre com seu e-mail e senha.</p>
+              <form id="login-form" class="stack-form">
+                <label>
+                  <span>E-mail</span>
+                  <input name="email" type="email" autocomplete="email" placeholder="nome@email.com" required />
+                </label>
+                <label>
+                  <span>Senha</span>
+                  <input name="password" type="password" autocomplete="current-password" placeholder="Sua senha" minlength="8" required />
+                </label>
+                <button class="primary-button" type="submit">
+                  <span>Entrar</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              </form>
+              <div class="auth-divider"><span>novo por aqui?</span></div>
+              <button id="open-register" class="outline-button" type="button">Criar uma conta</button>
             </div>
-          </form>
-        </section>
 
-        <section id="company-dashboard" hidden>
-          <h3>Cadastrar vantagem</h3>
-          <form id="advantage-form">
-            <label
-              >Descrição<input name="description" maxlength="500" required
-            /></label>
-            <label
-              >Foto (URL)<input name="photoUrl" type="url" required
-            /></label>
-            <label
-              >Custo em moedas<input
-                name="costInCoins"
-                type="number"
-                min="1"
-                step="1"
-                required
-            /></label>
-            <div class="actions">
-              <button type="submit">Cadastrar vantagem</button>
+            <div id="register-view" data-auth-view hidden>
+              <button class="back-button" type="button" data-back-login>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                Voltar
+              </button>
+              <p class="eyebrow">Cadastrar conta</p>
+              <h2>Escolha seu perfil</h2>
+              <p class="form-intro">Selecione como deseja participar do sistema.</p>
+              <div class="profile-choice">
+                <button type="button" data-open-form="student-register">
+                  <span class="choice-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Zm-7 7.2 7 3.9 7-3.9V17l-7 4-7-4v-6.8Z"/></svg></span>
+                  <span><strong>Sou aluno</strong><small>Consulte seu saldo e resgate vantagens</small></span>
+                  <svg class="choice-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+                <button type="button" data-open-form="company-register">
+                  <span class="choice-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V7l8-4 8 4v14H4Zm3-11h3v3H7v-3Zm7 0h3v3h-3v-3ZM7 16h3v5H7v-5Zm7 0h3v5h-3v-5Z"/></svg></span>
+                  <span><strong>Sou empresa parceira</strong><small>Cadastre vantagens e valide cupons</small></span>
+                  <svg class="choice-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              </div>
             </div>
-          </form>
-          <h3>Minhas vantagens</h3>
-          <div id="company-advantages" class="records"></div>
-          <h3>Conferir cupom</h3>
-          <form id="coupon-form">
-            <label class="wide"
-              >Código do cupom<input name="code" required
-            /></label>
-            <div class="actions">
-              <button type="submit">Validar e consumir cupom</button>
-            </div>
-          </form>
+          </div>
         </section>
-      </section>
+      </main>
 
-      <section class="panel">
-        <h2 id="student-title">Cadastrar aluno</h2>
-        <form id="student-form">
-          <label>Nome<input name="name" required /></label>
-          <label>E-mail<input name="email" type="email" required /></label>
-          <label
-            >Senha<input name="password" type="password" minlength="8" required
-          /></label>
-          <label>CPF<input name="cpf" required /></label>
-          <label>RG<input name="rg" required /></label>
-          <label>Endereço<input name="address" required /></label>
-          <label>Curso<input name="course" required /></label>
-          <label
-            >Instituição<select name="institutionId" required></select
-          ></label>
-          <div class="actions">
-            <button type="submit">Salvar aluno</button>
-            <button
-              type="button"
-              class="secondary cancel-edit"
-              data-form="student-form"
-            >
-              Cancelar edição
+      <main id="registration-screen" class="registration-screen" data-screen="registration" hidden>
+        <header class="simple-header">
+          <a class="brand" href="#login" aria-label="Moeda Estudantil">
+            <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4.5 6v6c0 5.1 3.2 8.7 7.5 10 4.3-1.3 7.5-4.9 7.5-10V6L12 2Zm0 3.1 4.8 2.5v4.3c0 3.3-1.9 6.1-4.8 7.2-2.9-1.1-4.8-3.9-4.8-7.2V7.6L12 5.1Z"/></svg></span>
+            <span>Moeda Estudantil</span>
+          </a>
+          <button class="back-button" type="button" data-back-login>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            Voltar ao login
+          </button>
+        </header>
+
+        <section class="registration-layout">
+          <aside class="registration-aside">
+            <p class="eyebrow">Cadastro</p>
+            <h1 id="registration-title">Criar conta de aluno</h1>
+            <p id="registration-description">Preencha seus dados para começar a receber reconhecimento.</p>
+          </aside>
+
+          <section class="registration-card">
+            <form id="student-register-form" data-registration-form="student">
+              <div class="form-grid">
+                <label class="full"><span>Nome completo</span><input name="name" autocomplete="name" required /></label>
+                <label><span>E-mail</span><input name="email" type="email" autocomplete="email" required /></label>
+                <label><span>Senha</span><input name="password" type="password" autocomplete="new-password" minlength="8" required /></label>
+                <label><span>CPF</span><input name="cpf" inputmode="numeric" required /></label>
+                <label><span>RG</span><input name="rg" required /></label>
+                <label><span>Curso</span><input name="course" required /></label>
+                <label><span>Instituição</span><select name="institutionId" required></select></label>
+                <label class="full"><span>Endereço</span><input name="address" autocomplete="street-address" required /></label>
+              </div>
+              <button class="primary-button" type="submit"><span>Criar conta de aluno</span></button>
+            </form>
+
+            <form id="company-register-form" data-registration-form="company" hidden>
+              <div class="form-grid">
+                <label class="full"><span>Nome da empresa</span><input name="name" autocomplete="organization" required /></label>
+                <label class="full"><span>E-mail corporativo</span><input name="email" type="email" autocomplete="email" required /></label>
+                <label class="full"><span>Senha</span><input name="password" type="password" autocomplete="new-password" minlength="8" required /></label>
+              </div>
+              <button class="primary-button" type="submit"><span>Criar conta da empresa</span></button>
+            </form>
+          </section>
+        </section>
+      </main>
+
+      <main id="dashboard-screen" class="dashboard-screen" data-screen="dashboard" hidden>
+        <aside class="sidebar">
+          <a class="brand" href="#overview" aria-label="Moeda Estudantil">
+            <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4.5 6v6c0 5.1 3.2 8.7 7.5 10 4.3-1.3 7.5-4.9 7.5-10V6L12 2Zm0 3.1 4.8 2.5v4.3c0 3.3-1.9 6.1-4.8 7.2-2.9-1.1-4.8-3.9-4.8-7.2V7.6L12 5.1Z"/></svg></span>
+            <span>Moeda Estudantil</span>
+          </a>
+          <nav id="main-nav" class="main-nav" aria-label="Navegação principal"></nav>
+          <div class="sidebar-footer">
+            <div class="user-mini">
+              <span id="sidebar-avatar" class="avatar">ME</span>
+              <div><strong id="sidebar-name"></strong><small id="sidebar-role"></small></div>
+            </div>
+            <button id="logout-button" class="logout-button" type="button" title="Sair">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3m12-8h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
             </button>
           </div>
-        </form>
-        <h3>Alunos cadastrados</h3>
-        <div id="students" class="records"></div>
-      </section>
+        </aside>
 
-      <section class="panel">
-        <h2 id="company-title">Cadastrar empresa parceira</h2>
-        <form id="company-form">
-          <label>Nome da empresa<input name="name" required /></label>
-          <label>E-mail<input name="email" type="email" required /></label>
-          <label
-            >Senha<input name="password" type="password" minlength="8" required
-          /></label>
-          <div class="actions">
-            <button type="submit">Salvar empresa</button>
-            <button
-              type="button"
-              class="secondary cancel-edit"
-              data-form="company-form"
-            >
-              Cancelar edição
-            </button>
-          </div>
-        </form>
-        <h3>Empresas cadastradas</h3>
-        <div id="companies" class="records"></div>
-      </section>
-    </main>
+        <section class="dashboard-content">
+          <header class="dashboard-header">
+            <div>
+              <p id="screen-kicker" class="eyebrow"></p>
+              <h1 id="screen-title"></h1>
+            </div>
+            <div id="header-actions" class="header-actions"></div>
+          </header>
+
+          <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+          <section id="student-screen" class="dashboard-view" data-dashboard-screen="student" hidden></section>
+          <section id="professor-screen" class="dashboard-view" data-dashboard-screen="professor" hidden></section>
+          <section id="company-screen" class="dashboard-view" data-dashboard-screen="company" hidden></section>
+        </section>
+      </main>
+    </div>
     <script src="/app.js" defer></script>
   </body>
 </html>
