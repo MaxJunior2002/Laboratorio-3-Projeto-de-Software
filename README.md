@@ -218,3 +218,13 @@ rotas `/api/*` para a API NestJS e Render para hospedar a API e o PostgreSQL.
 O repositório contém a configuração para publicação; a criação dos serviços
 precisa ser concluída nas contas Render e Vercel do grupo. Os planos gratuitos
 podem ter limitações de disponibilidade e retenção de dados.
+
+### Contas demonstrativas
+
+O seed cria contas demonstrativas somente quando `SEED_DEMO_ACCOUNTS=true`.
+Nesse caso, configure no Render todos os campos `SEED_DEMO_STUDENT_*`,
+`SEED_DEMO_PROFESSOR_*` e `SEED_DEMO_COMPANY_*` listados em `render.yaml`.
+As senhas devem ter ao menos oito caracteres e devem ser mantidas como variáveis
+de ambiente, nunca no repositório. O seed atualiza os dados e a senha dessas
+contas em cada execução. Use credenciais públicas somente para dados de teste;
+qualquer pessoa com elas poderá acessar as contas no site implantado.

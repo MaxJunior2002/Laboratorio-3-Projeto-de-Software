@@ -22,3 +22,35 @@ services:
         fromDatabase:
           name: sistema-moeda-estudantil-db
           property: connectionString
+      - key: SEED_DEMO_ACCOUNTS
+        sync: false
+      - key: SEED_DEMO_STUDENT_EMAIL
+        sync: false
+      - key: SEED_DEMO_STUDENT_PASSWORD
+        sync: false
+      - key: SEED_DEMO_STUDENT_NAME
+        sync: false
+      - key: SEED_DEMO_STUDENT_CPF
+        sync: false
+      - key: SEED_DEMO_STUDENT_RG
+        sync: false
+      - key: SEED_DEMO_STUDENT_ADDRESS
+        sync: false
+      - key: SEED_DEMO_STUDENT_COURSE
+        sync: false
+      - key: SEED_DEMO_PROFESSOR_EMAIL
+        sync: false
+      - key: SEED_DEMO_PROFESSOR_PASSWORD
+        sync: false
+      - key: SEED_DEMO_PROFESSOR_NAME
+        sync: false
+      - key: SEED_DEMO_PROFESSOR_CPF
+        sync: false
+      - key: SEED_DEMO_PROFESSOR_DEPARTMENT
+        sync: false
+      - key: SEED_DEMO_COMPANY_EMAIL
+        sync: false
+      - key: SEED_DEMO_COMPANY_PASSWORD
+        sync: false
+      - key: SEED_DEMO_COMPANY_NAME
+        sync: false

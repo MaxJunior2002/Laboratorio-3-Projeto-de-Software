@@ -1,0 +1,60 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R /Annots [6 0 R] >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Length 1809 >>
+stream
+q 0.07 0.22 0.16 rg 0 680 595 162 re f Q
+BT /F1 12 Tf 52 790 Td 1 1 1 rg (SISTEMA DE MOEDA ESTUDANTIL) Tj ET
+BT /F1 30 Tf 52 738 Td 0.08 0.22 0.16 rg (Acesso ao sistema) Tj ET
+BT /F1 12 Tf 52 700 Td 0.32 0.38 0.34 rg (Link para acessar a aplicacao implantada:) Tj ET
+BT /F1 15 Tf 52 649 Td 0.08 0.36 0.27 rg (https://sistema-moeda-estudantil-front.vercel.app/) Tj ET
+BT /F1 10 Tf 52 625 Td 0.38 0.44 0.40 rg (Clique no endereco acima para abrir o sistema.) Tj ET
+0.86 0.90 0.87 RG 52 590 m 543 590 l S
+BT /F1 19 Tf 52 550 Td 0.08 0.22 0.16 rg (Contas de demonstracao) Tj ET
+BT /F1 10 Tf 52 522 Td 0.32 0.38 0.34 rg (Credenciais publicas para teste. Nao use dados reais nessas contas.) Tj ET
+0.94 0.96 0.94 rg 52 429 491 68 re f
+BT /F1 13 Tf 70 477 Td 0.08 0.22 0.16 rg (Aluno) Tj ET
+BT /F1 10 Tf 70 457 Td 0.32 0.38 0.34 rg (Login: aluno.teste@example.com) Tj ET
+BT /F1 10 Tf 70 440 Td 0.32 0.38 0.34 rg (Senha: AlunoDemo2026!) Tj ET
+0.94 0.96 0.94 rg 52 340 491 68 re f
+BT /F1 13 Tf 70 388 Td 0.08 0.22 0.16 rg (Professor) Tj ET
+BT /F1 10 Tf 70 368 Td 0.32 0.38 0.34 rg (Login: professor.teste@example.com) Tj ET
+BT /F1 10 Tf 70 351 Td 0.32 0.38 0.34 rg (Senha: ProfessorDemo2026!) Tj ET
+0.94 0.96 0.94 rg 52 251 491 68 re f
+BT /F1 13 Tf 70 299 Td 0.08 0.22 0.16 rg (Empresa parceira) Tj ET
+BT /F1 10 Tf 70 279 Td 0.32 0.38 0.34 rg (Login: empresa.teste@example.com) Tj ET
+BT /F1 10 Tf 70 262 Td 0.32 0.38 0.34 rg (Senha: EmpresaDemo2026!) Tj ET
+0.86 0.90 0.87 RG 52 218 m 543 218 l S
+BT /F1 9 Tf 52 192 Td 0.32 0.38 0.34 rg (Ative o seed no Render com SEED_DEMO_ACCOUNTS=true e configure todas as variaveis) Tj ET
+BT /F1 9 Tf 52 176 Td 0.32 0.38 0.34 rg (SEED_DEMO_* listadas no README. As contas so existem apos novo deploy da API.) Tj ET
+BT /F1 9 Tf 52 48 Td 0.46 0.50 0.47 rg (Gerado em 23/11/2026) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Annot /Subtype /Link /Rect [52 642 543 669] /Border [0 0 0] /A << /S /URI /URI (https://sistema-moeda-estudantil-front.vercel.app/) >> >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000257 00000 n 
+0000000354 00000 n 
+0000002215 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+2378
+%%EOF
