@@ -131,3 +131,90 @@ um resgate presencial.
   empresa parceira responsável.
 - Os diagramas representam a arquitetura lógica em MVC. A tecnologia de banco
   de dados e a estratégia de persistência serão definidas na Sprint 2.
+
+## Release 02 — Lab04S01
+
+Os casos de uso restantes foram implementados na API e na interface web:
+
+- autenticação com sessão persistida e controle de acesso por perfil;
+- saldo e extrato de alunos e professores;
+- crédito professoral de 1.000 moedas por semestre, cumulativo e idempotente;
+- envio transacional de moedas pelo professor, com motivo obrigatório;
+- cadastro e consulta de vantagens, resgate com código único e validação de
+  cupons de uso único pela empresa responsável;
+- notificações por e-mail armazenadas em uma fila persistente.
+
+As operações protegidas usam `Authorization: Bearer <token>`. Os principais
+endpoints são:
+
+| Operação | Endpoint |
+| --- | --- |
+| Entrar / sair | `POST /api/auth/login` / `DELETE /api/auth/session` |
+| Consultar saldo e extrato | `GET /api/wallet` |
+| Consultar vantagens disponíveis | `GET /api/advantages` |
+| Enviar moedas | `POST /api/professors/transfers` |
+| Cadastrar vantagem | `POST /api/advantages` |
+| Resgatar vantagem | `POST /api/redemptions` |
+| Conferir e consumir cupom | `POST /api/redemptions/verify/{codigo}` |
+
+### Executar localmente
+
+1. Inicie o PostgreSQL com `docker compose up -d` na raiz do repositório.
+2. Em `backend`, copie `.env.example` para `.env` e configure `DATABASE_URL`.
+3. Execute `npm install`, `npm run prisma:migrate` e `npm run prisma:seed`.
+4. Execute `npm run start:dev` e abra `http://localhost:3000`.
+
+Instituições são cadastradas pelo seed. Para pré-cadastrar um professor, defina
+todos os valores `SEED_PROFESSOR_*` no `.env` antes de executar o seed. Alunos e
+empresas parceiras podem criar suas contas pela interface.
+
+Para envio de e-mails, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`,
+`SMTP_FROM` e, quando aplicável, `SMTP_USER` e `SMTP_PASSWORD`. Sem SMTP, as
+mensagens permanecem na fila e a interface informa que a notificação está
+pendente; elas são processadas quando o serviço de e-mail está configurado.
+
+### Diagramas PlantUML
+
+Os códigos-fonte UML solicitados pela Lab04S01 estão em
+[`docs/uml/plantuml/`](./docs/uml/plantuml/):
+
+- [Visão geral de interação](./docs/uml/plantuml/VisaoGeralInteracao.puml)
+- [Cadastro de aluno](./docs/uml/plantuml/SequenciaCadastroAluno.puml)
+- [Cadastro de empresa parceira](./docs/uml/plantuml/SequenciaCadastroEmpresa.puml)
+- [Autenticação](./docs/uml/plantuml/SequenciaAutenticacao.puml)
+- [Crédito semestral](./docs/uml/plantuml/SequenciaCreditoSemestral.puml)
+- [Envio de moedas](./docs/uml/plantuml/SequenciaEnvioMoedas.puml)
+- [Consulta de saldo e extrato](./docs/uml/plantuml/SequenciaConsultaSaldo.puml)
+- [Cadastro de vantagem](./docs/uml/plantuml/SequenciaCadastroVantagem.puml)
+- [Resgate de vantagem](./docs/uml/plantuml/SequenciaResgateVantagem.puml)
+- [Conferência de cupom](./docs/uml/plantuml/SequenciaConferirCupom.puml)
+
+Cada arquivo pode ser renderizado individualmente com o PlantUML.
+
+## Release 02 — Lab04S02
+
+O diagrama de implantação está em
+[`docs/uml/plantuml/DiagramaImplantacao.puml`](./docs/uml/plantuml/DiagramaImplantacao.puml).
+A configuração de nuvem usa Vercel para servir a interface e encaminhar as
+rotas `/api/*` para a API NestJS e Render para hospedar a API e o PostgreSQL.
+
+### Publicação na nuvem
+
+1. Publique o repositório no GitHub.
+2. No Render, crie um Blueprint apontando para o repositório e use o arquivo
+   `render.yaml`. Ele configura o serviço Node.js, o banco PostgreSQL,
+   migrações e a carga inicial das instituições.
+3. No Vercel, importe o mesmo repositório e defina `backend/public` como
+   diretório raiz do projeto. Use o preset `Other`, sem comando de build e com
+   diretório de saída `.`.
+4. Confira se o domínio público do serviço Render corresponde ao destino
+   definido em `backend/public/vercel.json`; ajuste-o caso o Render atribua
+   outro domínio.
+5. Se desejar habilitar e-mail, configure no serviço Render `SMTP_HOST`,
+   `SMTP_PORT`, `SMTP_SECURE`, `SMTP_FROM` e, quando aplicável, `SMTP_USER` e
+   `SMTP_PASSWORD`. Para pré-cadastrar um professor, configure todos os valores
+   `SEED_PROFESSOR_*`.
+
+O repositório contém a configuração para publicação; a criação dos serviços
+precisa ser concluída nas contas Render e Vercel do grupo. Os planos gratuitos
+podem ter limitações de disponibilidade e retenção de dados.
